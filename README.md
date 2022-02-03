@@ -13,7 +13,7 @@ This application is for creating an API for a social media network that can hand
 ## Installation
 run 'npm i' and node index.js
 ## Usage
-node index.js, and it will run though local server 3000.
+node index.js, and it will run though local server 3000. watch the demo here: https://watch.screencastify.com/v/QgJSG16YaozqdzBscICL
 ## Contributing
 I did this project with the help of my tutor Andrew Hardemon.
 ## Tests
