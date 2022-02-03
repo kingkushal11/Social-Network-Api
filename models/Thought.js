@@ -3,7 +3,7 @@ const reactionSchema = require('./Reaction')
 // Schema to create Student model
 const thoughtSchema = new Schema(
   {
-      thoughText:{
+      thoughtText:{
         type: String,
         required: true,
         min_length: 1,
@@ -26,8 +26,12 @@ const thoughtSchema = new Schema(
   },
   {
     toJSON: {
+      virtuals:true,
       getters: true,
     },
+    
+    id:false,
+
   }
 );
 

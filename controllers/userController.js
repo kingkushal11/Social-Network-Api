@@ -1,21 +1,5 @@
 const { User, Thought } = require('../models');
 
-// Aggregate function to get the number of users overall
-const headCount = async () =>
-  User.aggregate()
-    .count('userCount')
-    .then((numberOfUsers) => numberOfUsers);
-
-// Aggregate function for getting the overall grade using $avg
-const grade = async (userId) =>
-  User.aggregate([
-    {
-      $unwind: '$friends',
-    },
-    {
-      $group: { _id: userId, overallGrade: { $avg: '$friends.score' } },
-    },
-  ]);
 
 module.exports = {
   // Get all users
@@ -24,7 +8,6 @@ module.exports = {
       .then(async (users) => {
         const userObj = {
           users,
-          headCount: await headCount(),
         };
         return res.json(userObj);
       })
@@ -42,7 +25,6 @@ module.exports = {
           ? res.status(404).json({ message: 'No user with that ID' })
           : res.json({
               user,
-              grade: await grade(req.params.userId),
             })
       )
       .catch((err) => {
@@ -93,7 +75,7 @@ module.exports = {
     console.log(req.body);
     User.findOneAndUpdate(
       { _id: req.params.userId },
-      { $addToSet: { friends: req.body } },
+      { $addToSet: { friends: req.params.friendId } },
       { runValidators: true, new: true }
     )
       .then((user) =>
@@ -109,7 +91,7 @@ module.exports = {
   removeFriend(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId },
-      { $pull: { friend: { friendId: req.params.friendId } } },
+      { $pull: { friends:req.params.friendId  } },
       { runValidators: true, new: true }
     )
       .then((user) =>
